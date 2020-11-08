@@ -1,6 +1,6 @@
 {% set name = "jxrlib" %}
-{% set version = "1.1" %}
-{% set sha256 = "c7287b86780befa0914f2eeb8be2ac83e672ebd4bd16dc5574a36a59d9708303" %}
+{% set version = "None" %}
+{% set sha256 = "a8d4633e18731bdeebbb56a055c9f636a288445df96df5773742d64ffc1a69be" %}
 
 package:
   name: {{ name }}
