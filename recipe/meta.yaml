@@ -22,6 +22,7 @@ requirements:
     - {{ compiler('c') }}
     - cmake  # [unix]
     - make  # [unix]
+    - patch     # [not win]
 
 test:
   commands:
