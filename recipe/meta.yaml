@@ -1,43 +1,54 @@
 {% set name = "jxrlib" %}
-{% set version = "1.1" %}
-{% set sha256 = "c7287b86780befa0914f2eeb8be2ac83e672ebd4bd16dc5574a36a59d9708303" %}
+{% set version = "1.2" %}
+{% set git_tag = "~git20170615.f752187" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: http://http.debian.net/debian/pool/main/{{ name[0] }}/{{ name }}/{{ name }}_{{ version }}.orig.tar.gz
-  sha256: {{ sha256 }}
-  patches:
+  url: http://deb.debian.org/debian/pool/main/{{ name[0] }}/{{ name }}/{{ name }}_{{ version }}{{ git_tag }}.orig.tar.xz
+  sha256: 3e3c9d3752b0bbf018ed9ce01b43dcd4be866521dc2370dc9221520b5bd440d4
+  patches:  # [unix]
     - usecmake.patch  # [unix]
 
 build:
-  number: 2
+  number: 0
   run_exports:
     - {{ pin_subpackage('jxrlib', max_pin='x.x') }}
 
 requirements:
   build:
     - {{ compiler('c') }}
+    - {{ stdlib('c') }}
     - cmake  # [unix]
     - make  # [unix]
-    - patch     # [not win]
+    - patch  # [unix]
 
 test:
   commands:
+    - test -f ${PREFIX}/bin/JxrDecApp  # [unix]
+    - test -f ${PREFIX}/bin/JxrEncApp  # [unix]
     - test -f ${PREFIX}/lib/libjxrglue${SHLIB_EXT}  # [unix]
     - test -f ${PREFIX}/lib/libjpegxr${SHLIB_EXT}  # [unix]
+    - if not exist %LIBRARY_BIN%\\JxrDecApp.exe exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\JxrEncApp.exe exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\libjxrglue.lib exit 1  # [win]
     - if not exist %LIBRARY_LIB%\\libjpegxr.lib exit 1  # [win]
 
 about:
   home: https://packages.debian.org/source/sid/jxrlib
+  dev_url: https://salsa.debian.org/debian-phototools-team/jxrlib
+  doc_url: https://salsa.debian.org/debian-phototools-team/jxrlib/-/tree/master/doc
   license: BSD-2-Clause
-  summary: "jxrlib - JPEG XR Library by Microsoft, built from Debian hosted sources."
-  description: "This package seems to be no longer maintained by the original developer (Microsoft)."
   license_family: BSD
   license_file: LICENSE
+  summary: "jxrlib - JPEG XR Library by Microsoft, built from Debian hosted sources."
+  description: |
+    This device porting kit (DPK) supports the JPEG XR still image format, based on
+    technology originally developed by Microsoft under the name HD Photo (formerly
+    Windows Media™ Photo). The JPEG XR format is similar, but not identical, to the
+    HD Photo/Windows Media™ Photo format.
 
 extra:
   recipe-maintainers:
